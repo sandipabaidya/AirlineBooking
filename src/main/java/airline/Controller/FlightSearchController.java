@@ -1,9 +1,9 @@
 package airline.Controller;
 
 import airline.Model.Flight;
-import airline.Model.FlightSchedules;
 import airline.Model.Location;
 import airline.Model.SearchCriteria;
+import airline.Model.TravelClassType;
 import airline.Services.FlightService;
 import airline.Utility.dataUploader;
 import org.springframework.stereotype.Controller;
@@ -31,6 +31,7 @@ public class FlightSearchController {
         List<Location> destinationCities = flights.getDestinationLocations();
         newModel.addAttribute("Sources", sourceCities);
         newModel.addAttribute("Destinations",destinationCities);
+        newModel.addAttribute("travelClasses", TravelClassType.values());
         newModel.addAttribute("searchCriteria", new SearchCriteria());
         return "flightSearch";
     }
@@ -38,10 +39,10 @@ public class FlightSearchController {
     @RequestMapping(value = "/searchFlight", method = RequestMethod.POST)
     public String searchSubmit(@ModelAttribute(value="searchCriteria")SearchCriteria searchCriteria, Model model) {
         System.out.println(searchCriteria.getSource() + searchCriteria.getDestination());
-        List<FlightSchedules> result = flights.findFlights(searchCriteria);
+        List<Flight> result = flights.findFlights(searchCriteria);
 
         System.out.println(result.size());
-        model.addAttribute("flightSchedules",result);
+        model.addAttribute("flights",result);
         return "SearchResult";
     }
 }

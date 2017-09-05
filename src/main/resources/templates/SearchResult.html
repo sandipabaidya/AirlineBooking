@@ -14,11 +14,11 @@
         <th>Source</th>
         <th>Destination</th>
     </tr>
-    <tr th:each="flightSchedule:${flightSchedules}">
-        <td th:text="${flightSchedule.departureDate}"></td>
-        <td th:text="${flightSchedule.flight.getFlightID()}"></td>
-        <td th:text="${flightSchedule.flight.getSource()}"></td>
-        <td th:text="${flightSchedule.flight.getDestination()}"></td>
+    <tr th:each="flight:${flights}">
+        <td th:text="${flight.departureDate}"></td>
+        <td th:text="${flight.getFlightID()}"></td>
+        <td th:text="${flight.getSource()}"></td>
+        <td th:text="${flight.getDestination()}"></td>
 
     </tr>
 </table>

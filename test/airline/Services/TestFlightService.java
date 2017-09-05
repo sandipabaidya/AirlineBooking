@@ -1,14 +1,16 @@
 package airline.Services;
-import airline.Model.FlightSchedules;
+import airline.Model.*;
 import airline.Utility.dataUploader;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.*;
 import java.util.stream.Collectors;
 
 import static airline.Services.FlightService.*;
@@ -22,6 +24,8 @@ import static org.junit.Assert.*;
 public class TestFlightService {
     private FlightService flightService;
 
+
+
     @Before
     public void setUp(){
         String flightInfoFileName="C:\\TWHandson\\AirlineBooking\\AirlineBooking\\src\\main\\resources\\FlightDetails";
@@ -32,7 +36,7 @@ public class TestFlightService {
 
     @Test
     public void ShouldGetIfDepartureDateIsNOTGiven(){
-        List<FlightSchedules> matchedFights = new ArrayList<FlightSchedules>();
+        List<Flight> matchedFights = new ArrayList<Flight>();
         Optional<LocalDate> date=null;
         matchedFights = flightService.getFlights().stream()
                 .filter(filterByDate(date))
@@ -43,7 +47,7 @@ public class TestFlightService {
 
     @Test
     public void ShouldGetIfDepartureDateIsGiven(){
-        List<FlightSchedules> matchedFights = new ArrayList<FlightSchedules>();
+        List<Flight> matchedFights = new ArrayList<Flight>();
         Optional<LocalDate> date=Optional.ofNullable(LocalDate.parse("2017-09-07", DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         matchedFights = flightService.getFlights().stream()
                 .filter(filterByDate(date))
@@ -54,7 +58,7 @@ public class TestFlightService {
 
     @Test
     public void ShouldGetIfDepartureDateAndLocationsAreGiven(){
-        List<FlightSchedules> matchedFights = new ArrayList<FlightSchedules>();
+        List<Flight> matchedFights = new ArrayList<Flight>();
         Optional<LocalDate> date=Optional.ofNullable(LocalDate.parse("2017-09-07", DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         matchedFights = flightService.getFlights().stream()
                 .filter(filterByDate(date))
@@ -63,4 +67,16 @@ public class TestFlightService {
 
         System.out.println(matchedFights.size());
     }
+
+
+
+    /*private List<FlightSchedules> filterList(List<FlightSchedules> flightSchedules, Predicate<FlightSchedules> predicate){
+        List<FlightSchedules> filteredList = new ArrayList<FlightSchedules>();
+        for(FlightSchedules flightSchedule:flightSchedules){
+            if(predicate.test(flightSchedule)){
+                filteredList.add(flightSchedule);
+            }
+        }
+        return filteredList;
+    }*/
 }

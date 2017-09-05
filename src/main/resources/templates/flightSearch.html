@@ -43,6 +43,18 @@
         <p><b>Date of Journey:</b></p>
         <input type="date" id="inputDepartureDate" name="inputDepartureDate" th:field="*{inputDepartureDate}" />
     </div>
+    <div class="col-lg-3">
+        <p><b>Select Class:</b></p>
+
+        <select class="form-control" id="travelClassType" name="travelClassType" th:field="*{travelClassType}">
+            <option value="0">Select</option>
+            <option th:each="travelClass : ${travelClasses}"
+                    th:value="${travelClass}"
+                    th:text="${travelClass}">
+            </option>
+        </select>
+    </div>
+
     <input type="submit" value="Search" />
 </form>
 

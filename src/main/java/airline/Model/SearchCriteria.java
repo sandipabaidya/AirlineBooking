@@ -15,8 +15,8 @@ public class SearchCriteria {
     private String destination;
     private int requiredSeats=1;
     private String inputDepartureDate;
-    //@DateTimeFormat(pattern = "MM/dd/yyyy")
     private Optional<LocalDate>  departureDate;
+    TravelClassType travelClassType;
 
     public String getInputDepartureDate() {
         return inputDepartureDate;
@@ -32,7 +32,6 @@ public class SearchCriteria {
         else
         {
             return Optional.ofNullable(LocalDate.parse(inputDepartureDate,DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            //LocalDate.parse(depurtureDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         }
     }
 
@@ -58,5 +57,13 @@ public class SearchCriteria {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public TravelClassType getTravelClassType() {
+        return travelClassType;
+    }
+
+    public void setTravelClassType(TravelClassType travelClassType) {
+        this.travelClassType = travelClassType;
     }
 }

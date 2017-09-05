@@ -1,11 +1,8 @@
 package airline.Utility;
 
-import airline.Model.Flight;
-import airline.Model.FlightSchedules;
-import airline.Model.Location;
+import airline.Model.*;
 
 import java.io.*;
-import java.text.*;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -14,8 +11,8 @@ import java.util.*;
  */
 public final class dataUploader {
 
-    public static List<FlightSchedules> LoadFlights(String fileName) {
-        List <FlightSchedules> resultList = new ArrayList<FlightSchedules>();
+    public static List<Flight> LoadFlights(String fileName) {
+        List <Flight> resultList = new ArrayList<Flight>();
         String line = "";
         String cvsSplitBy = ",";
 
@@ -27,9 +24,16 @@ public final class dataUploader {
                 String flightID = flightData[0].trim();
                 String src = flightData[1].trim();
                 String destination = flightData[2].trim();
-                int availableSeats =Integer.parseInt( flightData[3].trim());
-                LocalDate depurtureDate = LocalDate.parse(flightData[4]);
-                resultList.add(new FlightSchedules(depurtureDate, new Flight(flightID, src, destination), availableSeats));
+                LocalDate depurtureDate = LocalDate.parse(flightData[3]);
+                String aeroplaneNo=flightData[4].trim();
+                int economySeat =Integer.parseInt( flightData[6].trim());
+                int businessSeat =Integer.parseInt( flightData[8].trim());
+                int firstclassSeat =Integer.parseInt( flightData[10].trim());
+                Map<TravelClassType, TravelClass> travelClasses = new HashMap<TravelClassType,TravelClass>();
+                travelClasses.put(TravelClassType.ECONOMY,new TravelClass(TravelClassType.ECONOMY,economySeat));
+                travelClasses.put(TravelClassType.BUSINESS,new TravelClass(TravelClassType.BUSINESS,businessSeat));
+                travelClasses.put(TravelClassType.FIRSTCLASS,new TravelClass(TravelClassType.FIRSTCLASS,firstclassSeat));
+                resultList.add(new Flight(flightID, src, destination, depurtureDate, new Aeroplane(aeroplaneNo,travelClasses)));
 
             }
 
