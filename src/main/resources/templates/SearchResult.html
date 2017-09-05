@@ -9,14 +9,16 @@
 <h1>Search Results</h1>
 <table border="1" style="width:300px">
     <tr>
+        <th>Journey Date</th>
         <th>FlightID</th>
         <th>Source</th>
         <th>Destination</th>
     </tr>
-    <tr th:each="flight:${flights}">
-        <td th:text="${flight.getFlightID()}"></td>
-        <td th:text="${flight.getSource()}"></td>
-        <td th:text="${flight.getDestination()}"></td>
+    <tr th:each="flightSchedule:${flightSchedules}">
+        <td th:text="${flightSchedule.departureDate}"></td>
+        <td th:text="${flightSchedule.flight.getFlightID()}"></td>
+        <td th:text="${flightSchedule.flight.getSource()}"></td>
+        <td th:text="${flightSchedule.flight.getDestination()}"></td>
 
     </tr>
 </table>

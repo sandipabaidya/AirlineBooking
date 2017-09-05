@@ -7,7 +7,6 @@ public class Flight {
     String flightID;
     String source;
     String destination;
-
     public Flight(String flightID, String source, String destination) {
         this.flightID = flightID;
         this.source = source;
@@ -37,4 +36,5 @@ public class Flight {
     public void setFlightID(String flightID) {
         flightID = flightID;
     }
+
 }

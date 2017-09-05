@@ -12,8 +12,8 @@
         <select class="form-control" id="source" name="source" th:field="*{source}" >
             <option value="">Select To City</option>
             <option th:each="city : ${Sources}"
-                    th:value="${city}"
-                    th:text="${city}"></option>
+                    th:value="${city.id}"
+                    th:text="${city.name}"></option>
         </select>
     </div>
     <div class="col-lg-3">
@@ -22,12 +22,28 @@
         <select class="form-control" id="destination" name="destination" th:field="*{destination}">
             <option value="">Select From City</option>
             <option th:each="city : ${Destinations}"
-                    th:value="${city}"
-                    th:text="${city}">
+                    th:value="${city.id}"
+                    th:text="${city.name}">
             </option>
         </select>
     </div>
-    <input type="submit" />
+
+    <div class="col-lg-3">
+        <p><b>Number of Passengers:</b></p>
+
+        <select class="form-control" id="requiredSeats" name="requiredSeats" th:field="*{requiredSeats}">
+            <option value="0">Select</option>
+            <option th:each="n : ${#numbers.sequence(1,9)}"
+                    th:value="${n}"
+                    th:text="${n}">
+            </option>
+        </select>
+    </div>
+    <div class="col-lg-3">
+        <p><b>Date of Journey:</b></p>
+        <input type="date" id="inputDepartureDate" name="inputDepartureDate" th:field="*{inputDepartureDate}" />
+    </div>
+    <input type="submit" value="Search" />
 </form>
 
 </body>
