@@ -29,11 +29,15 @@ public final class dataUploader {
                 int economySeat =Integer.parseInt( flightData[6].trim());
                 int businessSeat =Integer.parseInt( flightData[8].trim());
                 int firstclassSeat =Integer.parseInt( flightData[10].trim());
-                Map<TravelClassType, TravelClass> travelClasses = new HashMap<TravelClassType,TravelClass>();
-                travelClasses.put(TravelClassType.ECONOMY,new TravelClass(TravelClassType.ECONOMY,economySeat));
-                travelClasses.put(TravelClassType.BUSINESS,new TravelClass(TravelClassType.BUSINESS,businessSeat));
-                travelClasses.put(TravelClassType.FIRSTCLASS,new TravelClass(TravelClassType.FIRSTCLASS,firstclassSeat));
-                resultList.add(new Flight(flightID, src, destination, depurtureDate, new Aeroplane(aeroplaneNo,travelClasses)));
+                List<TravelClass> travelClasses = new ArrayList<TravelClass>();
+                if(economySeat>0)
+                    travelClasses.add(new TravelClass(TravelClassType.ECONOMY,economySeat));
+                if(businessSeat>0)
+                    travelClasses.add(new TravelClass(TravelClassType.BUSINESS,businessSeat));
+                if(firstclassSeat>0)
+                    travelClasses.add(new TravelClass(TravelClassType.FIRSTCLASS,firstclassSeat));
+                resultList.add(new Flight(flightID, src, destination, depurtureDate,
+                        new Aeroplane(aeroplaneNo,travelClasses)));
 
             }
 

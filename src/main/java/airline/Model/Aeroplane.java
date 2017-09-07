@@ -1,33 +1,40 @@
 package airline.Model;
 
-import java.util.Map;
+import java.util.HashMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Sandipa on 9/5/2017.
  */
 public class Aeroplane {
 
-    String planeNumber;
-    Map<TravelClassType, TravelClass> traveClasses;
+    String planeModel;
+    List<TravelClass> traveClasses;
 
-    public Aeroplane(String planeNumber, Map<TravelClassType, TravelClass> traveClasses) {
-        this.planeNumber = planeNumber;
+    public Aeroplane(String planeNumber) {
+        this.planeModel = planeNumber;
+        traveClasses=new ArrayList<TravelClass>();
+    }
+    public Aeroplane(String planeNumber, List<TravelClass> traveClasses) {
+        this.planeModel = planeNumber;
         this.traveClasses = traveClasses;
     }
 
     public String getPlaneNumber() {
-        return planeNumber;
+        return planeModel;
     }
 
-    public void setPlaneNumber(String planeNumber) {
-        this.planeNumber = planeNumber;
+    public int getAvailableSeatsByTravelClass(TravelClassType travelClassType)
+    {
+        TravelClass matchTravelClass=traveClasses.stream()
+                .filter(travelClass -> travelClass.getTravelClassType().equals(travelClassType))
+                .findAny().orElse(null);
+        if(matchTravelClass!=null)
+            return matchTravelClass.getSeatsAvailable();
+        return 0;
     }
-
-    public Map<TravelClassType, TravelClass> getTraveClasses() {
-        return traveClasses;
-    }
-
-    public void setTraveClasses(Map<TravelClassType, TravelClass> traveClasses) {
-        this.traveClasses = traveClasses;
+    public void AddTravelClass(TravelClass travelClass) {
+            traveClasses.add( travelClass);
     }
 }

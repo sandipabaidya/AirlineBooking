@@ -12,6 +12,12 @@ public class Flight {
     LocalDate departureDate;
     Aeroplane aeroplane;
 
+    public Flight(String flightID, String source, String destination, LocalDate date) {
+        departureDate = date;
+        this.flightID = flightID;
+        this.source = source;
+        this.destination = destination;
+    }
     public Flight(String flightID, String source, String destination, LocalDate date, Aeroplane aeroplane) {
         departureDate = date;
         this.flightID = flightID;
@@ -20,14 +26,23 @@ public class Flight {
         this.aeroplane = aeroplane;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public boolean isRunBetweenCities(String source, String destination){
+        return this.source.equalsIgnoreCase(source)&& this.destination.equalsIgnoreCase(destination);
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public boolean isDepartingOnDate(LocalDate departureDate){
+        return this.departureDate.compareTo(departureDate)==0;
     }
 
+    public boolean isSeatsAvailableInTravelClass(TravelClassType travelClassType, int noOfRequiredSeats){
+        return this.aeroplane.getAvailableSeatsByTravelClass(travelClassType)>= noOfRequiredSeats;
+    }
+
+
+    public double getPriceforTravelClass(TravelClassType travelClassType)
+    {
+        return 0;
+    }
     public String getDestination() {
         return destination;
     }
@@ -40,22 +55,14 @@ public class Flight {
         return flightID;
     }
 
-    public void setFlightID(String flightID) {
-        flightID = flightID;
-    }
     public LocalDate getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(LocalDate departureDate) {
-        this.departureDate = departureDate;
-    }
 
     public Aeroplane getAeroplane() {
         return aeroplane;
     }
 
-    public void setAeroplane(Aeroplane aeroplane) {
-        this.aeroplane = aeroplane;
-    }
+
 }
