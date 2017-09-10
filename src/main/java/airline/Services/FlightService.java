@@ -37,9 +37,10 @@ public class FlightService {
                     continue;
             if(!flight.isSeatsAvailableInTravelClass(searchCriteria.getTravelClassType(),searchCriteria.getRequiredSeats()))
                 continue;
-            matchedFights.add(flight);
-        }
 
+            matchedFights.add(flight.getFlightWithTotalFare(searchCriteria.getTravelClassType(),
+                    searchCriteria.getRequiredSeats()));
+        }
         return matchedFights;
     }
 

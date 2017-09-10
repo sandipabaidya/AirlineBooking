@@ -9,10 +9,12 @@ public class TravelClass {
 
     private TravelClassType travelClassType;
     private int seatsAvailable=0;
+    private double baseFare=0;
 
-    public TravelClass(TravelClassType travelClassType, int seatsAvailable) {
+    public TravelClass(TravelClassType travelClassType, int seatsAvailable, double baseFare) {
         this.travelClassType = travelClassType;
         this.seatsAvailable = seatsAvailable;
+        this.baseFare=baseFare;
     }
 
     public TravelClassType getTravelClassType() {
@@ -20,5 +22,8 @@ public class TravelClass {
     }
     public int getSeatsAvailable() {
         return seatsAvailable;
+    }
+    public double getBaseFare() {
+        return baseFare;
     }
 }

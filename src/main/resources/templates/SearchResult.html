@@ -13,13 +13,14 @@
         <th>FlightID</th>
         <th>Source</th>
         <th>Destination</th>
+        <th>Fare</th>
     </tr>
     <tr th:each="flight:${flights}">
         <td th:text="${flight.departureDate}"></td>
         <td th:text="${flight.getFlightID()}"></td>
         <td th:text="${flight.getSource()}"></td>
         <td th:text="${flight.getDestination()}"></td>
-
+        <td th:text="${flight.getFare()}"></td>
     </tr>
 </table>
 

@@ -1,11 +1,9 @@
 package airline.Controller;
 
-import airline.Model.Flight;
-import airline.Model.Location;
-import airline.Model.SearchCriteria;
-import airline.Model.TravelClassType;
+import airline.Model.*;
 import airline.Repository.LocationRepository;
 import airline.Services.FlightService;
+import airline.Utility.CollectionTransformerFlightToFlightView;
 import airline.Utility.dataUploader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Sandipa on 9/3/2017.
@@ -39,11 +37,13 @@ public class FlightSearchController {
 
     @RequestMapping(value = "/searchFlight", method = RequestMethod.POST)
     public String searchSubmit(@ModelAttribute(value="searchCriteria")SearchCriteria searchCriteria, Model model) {
-        System.out.println(searchCriteria.getSource() + searchCriteria.getDestination());
         List<Flight> result = flightService.findFlights(searchCriteria);
-
+        List<FlightView> flightViewList = new CollectionTransformerFlightToFlightView()
+                .transform(result);
         System.out.println(result.size());
-        model.addAttribute("flights",result);
+        model.addAttribute("flights",flightViewList);
         return "SearchResult";
     }
+
+
 }

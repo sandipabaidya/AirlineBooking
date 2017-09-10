@@ -43,7 +43,7 @@ public class FlightTest{
     @Test
     public void ShouldReturnTrueIfSeatsAvailableForTravelClass()
     {
-        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 60);
+        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 60,8000);
         Aeroplane aeroplane = new Aeroplane("Boeing77");
         aeroplane.AddTravelClass(travelClass);
         Flight flight =new Flight("fl01","blr","del",LocalDate.parse("2017-09-06"),aeroplane);
@@ -54,7 +54,7 @@ public class FlightTest{
     @Test
     public void ShouldReturnFalseIfSeatsNOTAvailableForTravelClass()
     {
-        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 6);
+        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 6,8000);
         Aeroplane aeroplane = new Aeroplane("Boeing77");
         aeroplane.AddTravelClass(travelClass);
         Flight flight =new Flight("fl01","blr","del",LocalDate.parse("2017-09-06"),aeroplane);
@@ -65,7 +65,7 @@ public class FlightTest{
     @Test
     public void ShouldReturnFalseIfTravelClassNotAvailable()
     {
-        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 6);
+        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 6,8000);
         Aeroplane aeroplane = new Aeroplane("Boeing77");
         aeroplane.AddTravelClass(travelClass);
         Flight flight =new Flight("fl01","blr","del",LocalDate.parse("2017-09-06"),aeroplane);
@@ -73,4 +73,16 @@ public class FlightTest{
         Assert.assertFalse(flight.isSeatsAvailableInTravelClass(TravelClassType.BUSINESS, 5));
     }
 
+    @Test
+    public void ShouldReturn12000IfNoOfSeatsAre2andBaseFareis6000()
+    {
+        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 6,6000);
+        Aeroplane aeroplane = new Aeroplane("Boeing77");
+        aeroplane.AddTravelClass(travelClass);
+        Flight flight =new Flight("fl01","blr","del",LocalDate.parse("2017-09-06"),aeroplane);
+
+        Assert.assertEquals(12000,
+                flight.getFlightWithTotalFare(TravelClassType.ECONOMY, 2).getTotalFare(),0.001);
+
+    }
 }

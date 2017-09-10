@@ -5,13 +5,17 @@ import java.time.LocalDate;
 /**
  * Created by Sandipa on 9/1/2017.
  */
-public class Flight {
+public class Flight implements Cloneable{
     String flightID;
     String source;
     String destination;
     LocalDate departureDate;
     Aeroplane aeroplane;
+    double fare;
 
+    protected Object clone(){
+        return this.clone();
+    }
     public Flight(String flightID, String source, String destination, LocalDate date) {
         departureDate = date;
         this.flightID = flightID;
@@ -35,14 +39,11 @@ public class Flight {
     }
 
     public boolean isSeatsAvailableInTravelClass(TravelClassType travelClassType, int noOfRequiredSeats){
-        return this.aeroplane.getAvailableSeatsByTravelClass(travelClassType)>= noOfRequiredSeats;
+        if (getTravelClass(travelClassType)!=null)
+            return getTravelClass(travelClassType).getSeatsAvailable()>= noOfRequiredSeats;
+        return false;
     }
 
-
-    public double getPriceforTravelClass(TravelClassType travelClassType)
-    {
-        return 0;
-    }
     public String getDestination() {
         return destination;
     }
@@ -59,10 +60,27 @@ public class Flight {
         return departureDate;
     }
 
-
-    public Aeroplane getAeroplane() {
-        return aeroplane;
+    public double getTotalFare()
+    {
+        return this.fare;
     }
 
+    public Flight getFlightWithTotalFare(TravelClassType travelClassType, int noOfRequiredSeats)
+    {
+        //Shallow Copy
+        Flight cloneFlight=new Flight(this.flightID, this.source, this.destination, this.departureDate);
+        cloneFlight.fare = this.getTravelClass(travelClassType).getBaseFare() * noOfRequiredSeats ;
+
+        return cloneFlight;
+
+    }
+
+    private TravelClass getTravelClass(TravelClassType travelClassType){
+        if (this.aeroplane != null)
+            return this.aeroplane.traveClasses.stream()
+                .filter(travelClass -> travelClass.getTravelClassType().equals(travelClassType))
+                .findFirst().orElse(null);
+        return null;
+    }
 
 }

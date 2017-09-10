@@ -27,15 +27,18 @@ public final class dataUploader {
                 LocalDate depurtureDate = LocalDate.parse(flightData[3]);
                 String aeroplaneNo=flightData[4].trim();
                 int economySeat =Integer.parseInt( flightData[6].trim());
-                int businessSeat =Integer.parseInt( flightData[8].trim());
-                int firstclassSeat =Integer.parseInt( flightData[10].trim());
+                double economyFare =Double.parseDouble( flightData[7].trim());
+                int businessSeat =Integer.parseInt( flightData[9].trim());
+                double businessFare =Double.parseDouble( flightData[10].trim());
+                int firstclassSeat =Integer.parseInt( flightData[12].trim());
+                double firstclassFare =Double.parseDouble( flightData[13].trim());
                 List<TravelClass> travelClasses = new ArrayList<TravelClass>();
                 if(economySeat>0)
-                    travelClasses.add(new TravelClass(TravelClassType.ECONOMY,economySeat));
+                    travelClasses.add(new TravelClass(TravelClassType.ECONOMY,economySeat,economyFare));
                 if(businessSeat>0)
-                    travelClasses.add(new TravelClass(TravelClassType.BUSINESS,businessSeat));
+                    travelClasses.add(new TravelClass(TravelClassType.BUSINESS,businessSeat,businessFare));
                 if(firstclassSeat>0)
-                    travelClasses.add(new TravelClass(TravelClassType.FIRSTCLASS,firstclassSeat));
+                    travelClasses.add(new TravelClass(TravelClassType.FIRSTCLASS,firstclassSeat,firstclassFare));
                 resultList.add(new Flight(flightID, src, destination, depurtureDate,
                         new Aeroplane(aeroplaneNo,travelClasses)));
 

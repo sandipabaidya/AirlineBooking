@@ -9,14 +9,14 @@ import org.junit.Test
 class AeroplaneTest {
     @Test
     void ShallReturnZeroIfGivenTravelClassDoesNotMatch() {
-        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 60);
+        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 60,8000);
         Aeroplane aeroplane = new Aeroplane("Boeing77");
         aeroplane.AddTravelClass(travelClass);
         Assert.assertEquals(0, aeroplane.getAvailableSeatsByTravelClass(TravelClassType.BUSINESS));
     }
     @Test
     void ShallReturnAvailableSeatIfGivenTravelClassMatches() {
-        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 60);
+        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 60,8000);
         Aeroplane aeroplane = new Aeroplane("Boeing77");
         aeroplane.AddTravelClass(travelClass);
         Assert.assertEquals(60, aeroplane.getAvailableSeatsByTravelClass(TravelClassType.ECONOMY));

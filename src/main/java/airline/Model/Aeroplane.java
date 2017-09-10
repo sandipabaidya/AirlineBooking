@@ -34,6 +34,16 @@ public class Aeroplane {
             return matchTravelClass.getSeatsAvailable();
         return 0;
     }
+
+    public double getBaseFare(TravelClassType travelClassType)
+    {
+        TravelClass matchTravelClass=traveClasses.stream()
+                .filter(travelClass -> travelClass.getTravelClassType().equals(travelClassType))
+                .findAny().orElse(null);
+        if(matchTravelClass!=null)
+            return matchTravelClass.getBaseFare();
+        return 0;
+    }
     public void AddTravelClass(TravelClass travelClass) {
             traveClasses.add( travelClass);
     }
