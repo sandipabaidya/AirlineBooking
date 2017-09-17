@@ -1,5 +1,6 @@
-package airline.Model;
+package airline.Model.ViewModels;
 
+import airline.Model.TravelClassType;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.validation.constraints.NotNull;

@@ -10,6 +10,6 @@ class TravelClassTest {
     @Test
     void ShallMatchNumberOfSeatsIfTravelClassMatches() {
         TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 60,8000);
-        Assert.assertEquals(60, travelClass.getSeatsAvailable());
+        Assert.assertEquals(60, travelClass.getCapacity());
     }
 }

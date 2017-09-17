@@ -47,18 +47,18 @@ public class FlightTest{
         Aeroplane aeroplane = new Aeroplane("Boeing77");
         aeroplane.AddTravelClass(travelClass);
         Flight flight =new Flight("fl01","blr","del",LocalDate.parse("2017-09-06"),aeroplane);
-
-        Assert.assertTrue(flight.isSeatsAvailableInTravelClass(TravelClassType.ECONOMY, 5));
+        flight.bookSeats(TravelClassType.ECONOMY, 9)
+        Assert.assertTrue(flight.isSeatsAvailableInTravelClass(TravelClassType.ECONOMY, 4));
     }
 
     @Test
     public void ShouldReturnFalseIfSeatsNOTAvailableForTravelClass()
     {
-        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 6,8000);
+        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 12,8000);
         Aeroplane aeroplane = new Aeroplane("Boeing77");
         aeroplane.AddTravelClass(travelClass);
         Flight flight =new Flight("fl01","blr","del",LocalDate.parse("2017-09-06"),aeroplane);
-
+        flight.bookSeats(TravelClassType.ECONOMY, 9)
         Assert.assertFalse(flight.isSeatsAvailableInTravelClass(TravelClassType.ECONOMY, 7));
     }
 
@@ -74,6 +74,28 @@ public class FlightTest{
     }
 
     @Test
+    public void ShouldGet15AsTotalSeatOccupied()
+    {
+        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 60,8000);
+        Aeroplane aeroplane = new Aeroplane("Boeing77");
+        aeroplane.AddTravelClass(travelClass);
+        Flight flight =new Flight("fl01","blr","del",LocalDate.parse("2017-09-06"),aeroplane);
+        flight.bookSeats(TravelClassType.ECONOMY, 9)
+        flight.bookSeats(TravelClassType.ECONOMY, 6)
+        Assert.assertEquals(15, flight.getNoOfOccupiedSeats(TravelClassType.ECONOMY));
+    }
+
+    @Test
+    public void ShouldReturnTotalCapacityAsAvailableifNoSeatsOccupied()
+    {
+        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 60,8000);
+        Aeroplane aeroplane = new Aeroplane("Boeing77");
+        aeroplane.AddTravelClass(travelClass);
+        Flight flight =new Flight("fl01","blr","del",LocalDate.parse("2017-09-06"),aeroplane);
+        Assert.assertEquals(60, flight.getNoOfAvailableSeats(TravelClassType.ECONOMY));
+    }
+
+    @Test
     public void ShouldReturn12000IfNoOfSeatsAre2andBaseFareis6000()
     {
         TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 6,6000);
@@ -82,7 +104,7 @@ public class FlightTest{
         Flight flight =new Flight("fl01","blr","del",LocalDate.parse("2017-09-06"),aeroplane);
 
         Assert.assertEquals(12000,
-                flight.getFlightWithTotalFare(TravelClassType.ECONOMY, 2).getTotalFare(),0.001);
+                flight.getBaseFare(TravelClassType.ECONOMY)*2,0.001);
 
     }
 }

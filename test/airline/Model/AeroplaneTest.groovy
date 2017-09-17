@@ -12,13 +12,13 @@ class AeroplaneTest {
         TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 60,8000);
         Aeroplane aeroplane = new Aeroplane("Boeing77");
         aeroplane.AddTravelClass(travelClass);
-        Assert.assertEquals(0, aeroplane.getAvailableSeatsByTravelClass(TravelClassType.BUSINESS));
+        Assert.assertEquals(0, aeroplane.getCapacityByTravelClass(TravelClassType.BUSINESS));
     }
     @Test
     void ShallReturnAvailableSeatIfGivenTravelClassMatches() {
         TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 60,8000);
         Aeroplane aeroplane = new Aeroplane("Boeing77");
         aeroplane.AddTravelClass(travelClass);
-        Assert.assertEquals(60, aeroplane.getAvailableSeatsByTravelClass(TravelClassType.ECONOMY));
+        Assert.assertEquals(60, aeroplane.getCapacityByTravelClass(TravelClassType.ECONOMY));
     }
 }

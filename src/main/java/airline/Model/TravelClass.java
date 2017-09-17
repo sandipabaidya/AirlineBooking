@@ -8,20 +8,20 @@ package airline.Model;
 public class TravelClass {
 
     private TravelClassType travelClassType;
-    private int seatsAvailable=0;
+    private int capacity=0;
     private double baseFare=0;
 
-    public TravelClass(TravelClassType travelClassType, int seatsAvailable, double baseFare) {
+    public TravelClass(TravelClassType travelClassType, int capacity, double baseFare) {
         this.travelClassType = travelClassType;
-        this.seatsAvailable = seatsAvailable;
+        this.capacity = capacity;
         this.baseFare=baseFare;
     }
 
     public TravelClassType getTravelClassType() {
         return travelClassType;
     }
-    public int getSeatsAvailable() {
-        return seatsAvailable;
+    public int getCapacity() {
+        return capacity;
     }
     public double getBaseFare() {
         return baseFare;

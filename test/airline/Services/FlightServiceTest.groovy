@@ -2,25 +2,24 @@ package airline.Services
 
 import airline.Model.Aeroplane
 import airline.Model.Flight
-import airline.Model.SearchCriteria
+import airline.Model.PricingRuleModels.EconomicPricingRuleModel
+import airline.Model.ViewModels.FlightView
+import airline.Model.ViewModels.SearchCriteria
 import airline.Model.TravelClass
 import airline.Model.TravelClassType
 import airline.Repository.FlightRepository
+import airline.Repository.PricingRulesRepsitory
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test;
 import org.junit.runner.RunWith
-import org.mockito.Mockito;
-import org.mockito.Mockito.*;
+import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner
 
-import java.lang.reflect.Array
 import java.time.LocalDate
-
-import static org.mockito.Mockito.*;
 
 /**
  * Created by Sandipa on 9/7/2017.
@@ -35,11 +34,15 @@ class FlightServiceTest{
     @MockBean
     FlightRepository flightRepository;
 
+    @MockBean
+    PricingRulesRepsitory pricingRulesRepsitory;
+
     @Before
     public void setUp()
     {
-        //flightService=mock(FlightService.class);
         Mockito.when(flightRepository.getFlights()).thenReturn(listOfMockFlights);
+        Mockito.when(pricingRulesRepsitory.getEconomicPricingRuleList()).thenReturn(Arrays.asList(mockEconomicRule1, mockEconomicRule2));
+
     }
 
 
@@ -52,6 +55,11 @@ class FlightServiceTest{
 
     private List<Flight> listOfMockFlights = new ArrayList<>(Arrays.asList(mockFlight));
 
+    EconomicPricingRuleModel mockEconomicRule1 = new EconomicPricingRuleModel(0,40,0);
+    EconomicPricingRuleModel mockEconomicRule2 = new EconomicPricingRuleModel(40,90,30);
+
+
+
 
     @Test
     public void testGetFlightsBetweenCities() {
@@ -60,9 +68,25 @@ class FlightServiceTest{
         searchCriteria.setDestination("dest");
         searchCriteria.setTravelClassType(TravelClassType.BUSINESS);
         searchCriteria.setRequiredSeats(2);
-        List<Flight> listOfMatchingFlights = flightService.findFlights(searchCriteria);
+        List<FlightView> listOfMatchingFlights = flightService.findFlights(searchCriteria);
 
         Assert.assertEquals(1, listOfMatchingFlights.size());
+    }
+
+
+
+
+    @Test
+    public void ShouldReturn1ZeroIfClassIsNotAvailable()
+    {
+        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 6,6000);
+        Aeroplane aeroplane = new Aeroplane("Boeing77");
+        aeroplane.AddTravelClass(travelClass);
+        Flight flight =new Flight("fl01","blr","del",LocalDate.parse("2017-09-06"),aeroplane);
+
+        Assert.assertEquals(0,
+                flight.getBaseFare(TravelClassType.BUSINESS),0.001);
+
     }
 
 

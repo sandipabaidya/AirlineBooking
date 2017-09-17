@@ -1,10 +1,12 @@
 package airline.Controller;
 
 import airline.Model.*;
+import airline.Model.ViewModels.FlightView;
+import airline.Model.ViewModels.SearchCriteria;
+import airline.Model.ViewModels.SearchResponse;
 import airline.Repository.LocationRepository;
+import airline.Repository.PricingRulesRepsitory;
 import airline.Services.FlightService;
-import airline.Utility.CollectionTransformerFlightToFlightView;
-import airline.Utility.dataUploader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,7 @@ public class FlightSearchController {
     @Autowired
     LocationRepository locationRepository;
 
+
     @RequestMapping(value="/")
     public String welcomeMessage(Model newModel) {
         newModel.addAttribute("Sources", locationRepository.getLocations());
@@ -37,11 +40,15 @@ public class FlightSearchController {
 
     @RequestMapping(value = "/searchFlight", method = RequestMethod.POST)
     public String searchSubmit(@ModelAttribute(value="searchCriteria")SearchCriteria searchCriteria, Model model) {
-        List<Flight> result = flightService.findFlights(searchCriteria);
-        List<FlightView> flightViewList = new CollectionTransformerFlightToFlightView()
-                .transform(result);
-        System.out.println(result.size());
-        model.addAttribute("flights",flightViewList);
+        //PricingRulesRepsitory pricingRulesRepsitory = new PricingRulesRepsitory();
+        SearchResponse response = flightService.SearchFlights(searchCriteria);
+
+        if(response.isSearchSuccess())
+            model.addAttribute("flights",response.getMatchedFights());
+        else
+        {
+            model.addAttribute("message",response.getMessage());
+        }
         return "SearchResult";
     }
 

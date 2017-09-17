@@ -1,15 +1,19 @@
 package airline.Services;
 import airline.Model.Flight;
-import airline.Model.SearchCriteria;
+import airline.Model.TravelClass;
+import airline.Model.TravelClassType;
+import airline.Model.ViewModels.FlightView;
+import airline.Model.ViewModels.SearchCriteria;
+import airline.Model.ViewModels.SearchResponse;
+import airline.Processor.IPriceProcessor;
+import airline.Processor.PriceProcessor;
 import airline.Repository.FlightRepository;
+import airline.Repository.PricingRulesRepsitory;
+import airline.Utility.FlightToFlightViewTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -21,27 +25,61 @@ public class FlightService {
     @Autowired
     FlightRepository flightRepository;
 
-    public FlightService()    {
+    @Autowired
+    PricingRulesRepsitory pricingRulesRepsitory;
+
+    @Autowired
+    PriceProcessingService priceProcessingService;
+
+    IPriceProcessor priceProcessor;
+
+    public SearchResponse SearchFlights(SearchCriteria searchCriteria) {
+        SearchResponse searchResponse=new SearchResponse();
+
+        List<FlightView> flightViews = findFlights(searchCriteria).stream()
+                .map(flight -> convertToFlightViewWithPrice(flight, searchCriteria))
+                .collect(Collectors.toList());
+
+        searchResponse.setSearchSuccess(flightViews.size()>0);
+        searchResponse.setMatchedFights(flightViews);
+        if(flightViews.size()>0)
+            searchResponse.setMessage("No Flight Found");
+
+        return searchResponse;
     }
 
-
-    public List<Flight> findFlights(SearchCriteria searchCriteria) {
+    private List<Flight> findFlights(SearchCriteria searchCriteria) {
         List<Flight> flights=flightRepository.getFlights();
 
-        List<Flight> matchedFights = new ArrayList<Flight>();
-        for (Flight flight:flights) {
-            if(!flight.isRunBetweenCities(searchCriteria.getSource(),searchCriteria.getDestination()))
-                    continue;
-            if(searchCriteria.getDepartureDate()!=null)
-                if(!flight.isDepartingOnDate(searchCriteria.getDepartureDate()))
-                    continue;
-            if(!flight.isSeatsAvailableInTravelClass(searchCriteria.getTravelClassType(),searchCriteria.getRequiredSeats()))
-                continue;
 
-            matchedFights.add(flight.getFlightWithTotalFare(searchCriteria.getTravelClassType(),
-                    searchCriteria.getRequiredSeats()));
-        }
+        List<Flight> matchedFights= flights.stream()
+                .filter(flight -> flight.isRunBetweenCities(searchCriteria.getSource(),searchCriteria.getDestination()))
+                .filter(flight -> searchCriteria.getDepartureDate()==null ||
+                        flight.isDepartingOnDate(searchCriteria.getDepartureDate()))
+                .filter(flight -> flight.isSeatsAvailableInTravelClass(searchCriteria.getTravelClassType(),searchCriteria.getRequiredSeats()))
+                .collect(Collectors.toList());
+
+
+
         return matchedFights;
     }
 
+    private FlightView convertToFlightViewWithPrice(Flight flight, SearchCriteria searchCriteria) {
+
+        FlightToFlightViewTransformer transformer=new FlightToFlightViewTransformer();
+        FlightView flightView=transformer.transform(flight);
+
+        //Calculate and Set Price
+        double fare= flight.getBaseFare(searchCriteria.getTravelClassType());
+        if(priceProcessingService.getPriceProcessorInstance(flight, searchCriteria.getTravelClassType()).isPresent()) {
+            priceProcessor = priceProcessingService.getPriceProcessorInstance(flight, searchCriteria.getTravelClassType()).get();
+            priceProcessor.setPricingRulesRepsitory(pricingRulesRepsitory);
+            fare = priceProcessor.applyPriceIncrement(fare);
+        }
+
+        flightView.setFare(fare * searchCriteria.getRequiredSeats());
+
+        //return View+
+        return flightView;
+    }
 }

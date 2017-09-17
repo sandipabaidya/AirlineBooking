@@ -25,13 +25,13 @@ public class Aeroplane {
         return planeModel;
     }
 
-    public int getAvailableSeatsByTravelClass(TravelClassType travelClassType)
+    public int getCapacityByTravelClass(TravelClassType travelClassType)
     {
         TravelClass matchTravelClass=traveClasses.stream()
                 .filter(travelClass -> travelClass.getTravelClassType().equals(travelClassType))
                 .findAny().orElse(null);
         if(matchTravelClass!=null)
-            return matchTravelClass.getSeatsAvailable();
+            return matchTravelClass.getCapacity();
         return 0;
     }
 

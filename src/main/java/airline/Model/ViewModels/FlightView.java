@@ -1,4 +1,4 @@
-package airline.Model;
+package airline.Model.ViewModels;
 
 import java.time.LocalDate;
 
