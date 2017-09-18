@@ -3,6 +3,7 @@ package airline.Services;
 import airline.Model.Flight;
 import airline.Model.TravelClass;
 import airline.Model.TravelClassType;
+import airline.Model.ViewModels.SearchCriteria;
 import airline.Processor.BusinessPriceProcessor;
 import airline.Processor.EconomicPriceProcessor;
 import airline.Processor.FirstClassPriceProcessor;
@@ -20,8 +21,24 @@ import java.util.Optional;
 @Service
 public class PriceProcessingService {
 
+    @Autowired
+    PricingRulesRepsitory pricingRulesRepsitory;
 
-    public Optional<IPriceProcessor> getPriceProcessorInstance(Flight flight, TravelClassType travelClassType){
+
+    public double getTotalFare(Flight flight, SearchCriteria searchCriteria)
+    {
+        double fare= flight.getBaseFare(searchCriteria.getTravelClassType());
+
+        Optional<IPriceProcessor> priceProcessor= getPriceProcessorInstance(flight, searchCriteria.getTravelClassType());
+        if(priceProcessor.isPresent()) {
+            priceProcessor.get().setPricingRulesRepsitory(pricingRulesRepsitory);
+            fare = priceProcessor.get().applyPriceIncrement(fare);
+        }
+
+        return fare * searchCriteria.getRequiredSeats();
+    }
+
+    private Optional<IPriceProcessor> getPriceProcessorInstance(Flight flight, TravelClassType travelClassType){
 
         IPriceProcessor priceProcessor;
         switch (travelClassType){
@@ -35,7 +52,7 @@ public class PriceProcessingService {
                 priceProcessor =new FirstClassPriceProcessor(flight.getDepartureDate());
                 break;
             default:
-                priceProcessor =null;
+                return Optional.empty();
         }
 
         return Optional.ofNullable(priceProcessor);

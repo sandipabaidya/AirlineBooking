@@ -36,6 +36,9 @@ public class PricingRulesRepsitory {
         firstClassPricingRuleModel =new FirstClassPricingRuleModel();
     }
 
+    public PricingRulesRepsitory getPricingRulesRepsitory(){
+        return this;
+    }
     public List<EconomicPricingRuleModel> getEconomicPricingRuleList() {
         return economicPricingRuleList;
     }

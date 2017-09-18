@@ -34,14 +34,11 @@ class FlightServiceTest{
     @MockBean
     FlightRepository flightRepository;
 
-    @MockBean
-    PricingRulesRepsitory pricingRulesRepsitory;
 
     @Before
     public void setUp()
     {
         Mockito.when(flightRepository.getFlights()).thenReturn(listOfMockFlights);
-        Mockito.when(pricingRulesRepsitory.getEconomicPricingRuleList()).thenReturn(Arrays.asList(mockEconomicRule1, mockEconomicRule2));
 
     }
 
@@ -54,12 +51,6 @@ class FlightServiceTest{
             )));
 
     private List<Flight> listOfMockFlights = new ArrayList<>(Arrays.asList(mockFlight));
-
-    EconomicPricingRuleModel mockEconomicRule1 = new EconomicPricingRuleModel(0,40,0);
-    EconomicPricingRuleModel mockEconomicRule2 = new EconomicPricingRuleModel(40,90,30);
-
-
-
 
     @Test
     public void testGetFlightsBetweenCities() {

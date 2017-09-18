@@ -26,12 +26,7 @@ public class FlightService {
     FlightRepository flightRepository;
 
     @Autowired
-    PricingRulesRepsitory pricingRulesRepsitory;
-
-    @Autowired
     PriceProcessingService priceProcessingService;
-
-    IPriceProcessor priceProcessor;
 
     public SearchResponse SearchFlights(SearchCriteria searchCriteria) {
         SearchResponse searchResponse=new SearchResponse();
@@ -70,14 +65,7 @@ public class FlightService {
         FlightView flightView=transformer.transform(flight);
 
         //Calculate and Set Price
-        double fare= flight.getBaseFare(searchCriteria.getTravelClassType());
-        if(priceProcessingService.getPriceProcessorInstance(flight, searchCriteria.getTravelClassType()).isPresent()) {
-            priceProcessor = priceProcessingService.getPriceProcessorInstance(flight, searchCriteria.getTravelClassType()).get();
-            priceProcessor.setPricingRulesRepsitory(pricingRulesRepsitory);
-            fare = priceProcessor.applyPriceIncrement(fare);
-        }
-
-        flightView.setFare(fare * searchCriteria.getRequiredSeats());
+        flightView.setFare(priceProcessingService.getTotalFare(flight, searchCriteria));
 
         //return View+
         return flightView;
