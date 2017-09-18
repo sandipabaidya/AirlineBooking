@@ -19,11 +19,6 @@ public class EconomicPriceProcessor extends PriceProcessor {
         this.totalSeatCapacity=totalSeatCapacity;
     }
 
-    @Override
-    public double applyPriceIncrement(double baseFare){
-        setPercentageOfIncrement();
-        return super.applyPriceIncrement(baseFare);
-    }
 
     @Override
     protected void setPercentageOfIncrement()

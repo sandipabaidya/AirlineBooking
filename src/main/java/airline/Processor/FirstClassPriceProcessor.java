@@ -17,11 +17,6 @@ public class FirstClassPriceProcessor extends PriceProcessor {
         this.dateOfDeparture = dateOfDeparture;
     }
 
-    @Override
-    public double applyPriceIncrement(double baseFare){
-        setPercentageOfIncrement();
-        return super.applyPriceIncrement(baseFare);
-    }
 
     @Override
     protected void setPercentageOfIncrement()
@@ -29,7 +24,8 @@ public class FirstClassPriceProcessor extends PriceProcessor {
         int dayDiffWithDateOfJourney = dateOfDeparture.compareTo(LocalDate.now());
 
         if(dayDiffWithDateOfJourney >= 0 && dayDiffWithDateOfJourney < 10) {
-            percentageOfIncrement = pricingRulesRepsitory.getFirstClassPricingRuleModel().getIncrementalPercentInFare(dayDiffWithDateOfJourney);
+            percentageOfIncrement = pricingRulesRepsitory.getFirstClassPricingRuleModel()
+                    .getIncrementalPercentInFare(dayDiffWithDateOfJourney);
         }
 
     }

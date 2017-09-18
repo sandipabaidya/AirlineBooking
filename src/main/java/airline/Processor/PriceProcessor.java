@@ -20,6 +20,7 @@ public abstract class PriceProcessor implements IPriceProcessor{
     protected abstract void setPercentageOfIncrement();
 
     public double applyPriceIncrement(double baseFare){
+        setPercentageOfIncrement();
         return baseFare + baseFare*percentageOfIncrement/100;
     }
 

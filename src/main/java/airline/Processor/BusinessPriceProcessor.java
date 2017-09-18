@@ -19,11 +19,6 @@ public class BusinessPriceProcessor extends PriceProcessor {
         this.dateOfDeparture = dateOfDeparture;
     }
 
-    @Override
-    public double applyPriceIncrement(double baseFare){
-        setPercentageOfIncrement();
-        return super.applyPriceIncrement(baseFare);
-    }
 
     @Override
     protected void setPercentageOfIncrement()
