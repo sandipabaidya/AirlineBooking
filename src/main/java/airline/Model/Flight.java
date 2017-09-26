@@ -1,11 +1,11 @@
 package airline.Model;
 
-import airline.Processor.EconomicPriceProcessor;
-import airline.Processor.IPriceProcessor;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by Sandipa on 9/1/2017.
@@ -16,21 +16,12 @@ public class Flight{
     String destination;
     LocalDate departureDate;
     Aeroplane aeroplane;
-    Map<TravelClassType, Integer> OccupiedSeats;
-    int economicSeatsOccupied;
 
     public Flight(String flightID, String source, String destination, LocalDate date) {
         departureDate = date;
         this.flightID = flightID;
         this.source = source;
         this.destination = destination;
-        OccupiedSeats = new HashMap(){
-            {
-                put(TravelClassType.ECONOMY, 0);
-                put(TravelClassType.BUSINESS, 0);
-                put(TravelClassType.FIRSTCLASS, 0);
-            }
-        };
     }
     public Flight(String flightID, String source, String destination, LocalDate date, Aeroplane aeroplane) {
         this( flightID,  source,  destination,  date);
@@ -46,7 +37,7 @@ public class Flight{
     }
 
     public boolean isSeatsAvailableInTravelClass(TravelClassType travelClassType, int noOfRequiredSeats){
-        return this.getNoOfAvailableSeats(travelClassType) >= noOfRequiredSeats;
+        return this.aeroplane.getAvailabilityByTravelClass(travelClassType) >= noOfRequiredSeats;
     }
 
     public String getDestination() {
@@ -67,46 +58,22 @@ public class Flight{
 
     public int getCapacity(TravelClassType travelClassType)
     {
-        TravelClass travelClass = getTravelClass(travelClassType);
-        if(travelClass!=null) {
-            return travelClass.getCapacity();
-        }
-
-        return 0;
+        return this.aeroplane.getCapacityByTravelClass(travelClassType);
     }
 
     public int getNoOfOccupiedSeats(TravelClassType travelClassType)
     {
-        return OccupiedSeats.containsKey(travelClassType)? OccupiedSeats.get(travelClassType) : 0;
+        return this.aeroplane.getNoOfOccupiedSeatsByTravelClass(travelClassType);
     }
-
-    public int getNoOfAvailableSeats(TravelClassType travelClassType)
-    {
-        return (this.getCapacity(travelClassType) - this.getNoOfOccupiedSeats(travelClassType)) ;
-    }
-
-
     public double getBaseFare(TravelClassType travelClassType)
     {
-        TravelClass travelClass = getTravelClass(travelClassType);
-        if(travelClass!=null) {
-            return travelClass.getBaseFare();
-        }
-
-        return 0;
+        return this.aeroplane.getBaseFare(travelClassType);
     }
 
-    public void bookSeats(TravelClassType travelClassType, int noOfBookedSeats)
+    public void bookSeats(TravelClassType travelClassType, int noOfSeatsTobeBooked)
     {
-        if(noOfBookedSeats>0 && noOfBookedSeats <10 )
-            OccupiedSeats.put(travelClassType, OccupiedSeats.get(travelClassType)+ noOfBookedSeats);
-    }
-    private TravelClass getTravelClass(TravelClassType travelClassType){
-        if (this.aeroplane != null)
-            return this.aeroplane.traveClasses.stream()
-                .filter(travelClass -> travelClass.getTravelClassType().equals(travelClassType))
-                .findFirst().orElse(null);
-        return null;
+        if(noOfSeatsTobeBooked>0 && noOfSeatsTobeBooked <10 )
+            this.aeroplane.updateSeatOccupancy(travelClassType,noOfSeatsTobeBooked);
     }
 
 }

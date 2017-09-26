@@ -85,15 +85,6 @@ public class FlightTest{
         Assert.assertEquals(15, flight.getNoOfOccupiedSeats(TravelClassType.ECONOMY));
     }
 
-    @Test
-    public void ShouldReturnTotalCapacityAsAvailableifNoSeatsOccupied()
-    {
-        TravelClass travelClass=new TravelClass(TravelClassType.ECONOMY, 60,8000);
-        Aeroplane aeroplane = new Aeroplane("Boeing77");
-        aeroplane.AddTravelClass(travelClass);
-        Flight flight =new Flight("fl01","blr","del",LocalDate.parse("2017-09-06"),aeroplane);
-        Assert.assertEquals(60, flight.getNoOfAvailableSeats(TravelClassType.ECONOMY));
-    }
 
     @Test
     public void ShouldReturn12000IfNoOfSeatsAre2andBaseFareis6000()
