@@ -1,9 +1,8 @@
 package airline.Processor;
 
 
-import airline.Model.IFlight;
-import airline.Model.PricingRuleModels.EconomicPricingRuleModel;
-import airline.Model.TravelClassType;
+import airline.Model.*;
+import airline.Model.PricingRuleModels.*;
 
 import java.util.*;
 import java.util.stream.Collectors;

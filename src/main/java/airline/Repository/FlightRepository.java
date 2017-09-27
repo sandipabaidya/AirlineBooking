@@ -1,7 +1,6 @@
 package airline.Repository;
 
 import airline.Model.Flight;
-import airline.Services.FlightService;
 import airline.Utility.dataUploader;
 import org.springframework.stereotype.Repository;
 

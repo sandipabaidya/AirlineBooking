@@ -3,8 +3,6 @@ package airline.Processor;
 import airline.Model.IFlight;
 import airline.Model.PricingRuleModels.*;
 import airline.Repository.PricingRulesRepsitory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 import java.util.*;
 

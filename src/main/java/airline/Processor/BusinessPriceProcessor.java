@@ -1,11 +1,9 @@
 package airline.Processor;
 
-import airline.Model.IFlight;
-import airline.Model.PricingRuleModels.BusinessPricingRuleModel;
-import airline.Model.TravelClassType;
+import airline.Model.*;
+import airline.Model.PricingRuleModels.*;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+import java.time.*;
 import java.util.Optional;
 
 /**

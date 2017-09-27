@@ -1,7 +1,6 @@
 package airline.Repository;
 
 import airline.Model.PricingRuleModels.*;
-import airline.Model.TravelClassType;
 import org.springframework.stereotype.Repository;
 
 import java.time.DayOfWeek;
