@@ -89,7 +89,7 @@ public class Flight implements IFlight{
     }
     public void bookSeats(TravelClassType travelClassType, int noOfSeatsTobeBooked)
     {
-        if(noOfSeatsTobeBooked>0 && noOfSeatsTobeBooked <10 )
+        if(noOfSeatsTobeBooked>0 && noOfSeatsTobeBooked <= aeroplane.getNoOfOccupiedSeatsByTravelClass(travelClassType) )
             this.aeroplane.updateSeatOccupancy(travelClassType,noOfSeatsTobeBooked);
     }
 

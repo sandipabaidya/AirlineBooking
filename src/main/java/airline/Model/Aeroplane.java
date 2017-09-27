@@ -59,6 +59,7 @@ public class Aeroplane {
         return false;
     }
     public void AddTravelClass(TravelClass travelClass) {
+        if(!getMatchedTravelClass(travelClass.getTravelClassType()).isPresent())
             traveClasses.add( travelClass);
     }
 
