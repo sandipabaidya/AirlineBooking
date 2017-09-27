@@ -29,7 +29,8 @@ class BusinessPriceProcessorTest{
     BusinessPricingRuleModel mockBizRule2;
 
     List<BusinessPricingRuleModel> bizRuleList;
-
+    IFlight mockFlight;
+    IPriceProcessor priceProcessor;
     @Before
     public void setUp()
     {
@@ -41,6 +42,10 @@ class BusinessPriceProcessorTest{
         mockBizRule2 = new BusinessPricingRuleModel(DayOfWeek.FRIDAY, 10);
 
         when(pricingRulesRepsitory.getBusinessPricingRuleList()).thenReturn(Arrays.asList(mockBizRule1, mockBizRule2));
+
+        mockFlight =Mockito.mock(IFlight.class)
+        priceProcessor=new BusinessPriceProcessor(mockFlight);
+        priceProcessor.setPricingRulesRepsitory(pricingRulesRepsitory);
     }
 
     @Test
@@ -53,16 +58,15 @@ class BusinessPriceProcessorTest{
 
     @Test
     void ShouldReturnPriceAs1500ifBasePriceis1000AndDOJisTHURSDAY() {
-        BusinessPriceProcessor priceProcessor=new BusinessPriceProcessor(LocalDate.parse("2017-09-21"));
-        priceProcessor.setPricingRulesRepsitory(pricingRulesRepsitory);
+
+        when(mockFlight.getDepartureDate()).thenReturn(LocalDate.parse("2017-09-21"));
         Assert.assertEquals(1500,priceProcessor.applyPriceIncrement(1000),0.01)
     }
 
     @Test
     void ShouldReturnPriceAs1000ifBasePriceis1000AndDOJisWEDNESSDAY() {
-        BusinessPriceProcessor priceProcessor=new BusinessPriceProcessor(LocalDate.parse("2017-09-20"));
-        priceProcessor.setPricingRulesRepsitory(pricingRulesRepsitory);
-        Assert.assertEquals(6000,priceProcessor.applyPriceIncrement(6000),0.01)
+        when(mockFlight.getDepartureDate()).thenReturn(LocalDate.parse("2017-09-20"));
+        Assert.assertEquals(1000,priceProcessor.applyPriceIncrement(1000),0.01)
     }
 
 }

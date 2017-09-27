@@ -1,5 +1,11 @@
 package airline.Model;
 
+import airline.Processor.IPriceProcessor;
+import airline.Processor.PriceProcessorResolver;
+import org.thymeleaf.processor.IProcessor;
+
+import java.util.Optional;
+
 /**
  * Created by Sandipa on 9/5/2017.
  */
@@ -16,6 +22,7 @@ public class TravelClass {
         this.travelClassType = travelClassType;
         this.capacity = capacity;
         this.baseFare=baseFare;
+
     }
 
     public TravelClassType getTravelClassType() {
@@ -42,4 +49,5 @@ public class TravelClass {
     public double getBaseFare() {
         return baseFare;
     }
+
 }

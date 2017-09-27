@@ -1,5 +1,6 @@
 package airline.Processor;
 
+import airline.Model.IFlight;
 import airline.Model.PricingRuleModels.*;
 import airline.Repository.PricingRulesRepsitory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +14,22 @@ import java.util.*;
 public abstract class PriceProcessor implements IPriceProcessor{
     protected float percentageOfIncrement=0;
     protected PricingRulesRepsitory pricingRulesRepsitory;
+    protected IFlight flight;
 
-    protected PriceProcessor(){
+    protected PriceProcessor(IFlight flight){
+        this.flight=flight;
     }
 
     protected abstract void setPercentageOfIncrement();
 
-    public double applyPriceIncrement(double baseFare){
+    @Override
+    public double applyPriceIncrement(double baseFare) {
+        this.flight=flight;
         setPercentageOfIncrement();
-        return baseFare + baseFare*percentageOfIncrement/100;
-    }
+        return baseFare + (baseFare * percentageOfIncrement)/100;
+}
 
+    @Override
     public void setPricingRulesRepsitory(PricingRulesRepsitory pricingRulesRepsitory){
         this.pricingRulesRepsitory = pricingRulesRepsitory;
     }

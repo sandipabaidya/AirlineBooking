@@ -1,5 +1,6 @@
 package airline.Processor;
 
+import airline.Model.IFlight;
 import airline.Repository.PricingRulesRepsitory;
 
 /**

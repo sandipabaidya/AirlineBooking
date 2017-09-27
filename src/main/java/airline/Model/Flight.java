@@ -1,21 +1,23 @@
 package airline.Model;
 
+import airline.Processor.*;
+import airline.Repository.PricingRulesRepsitory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * Created by Sandipa on 9/1/2017.
  */
-public class Flight{
+public class Flight implements IFlight{
     String flightID;
     String source;
     String destination;
     LocalDate departureDate;
     Aeroplane aeroplane;
+
+
 
     public Flight(String flightID, String source, String destination, LocalDate date) {
         departureDate = date;
@@ -52,24 +54,39 @@ public class Flight{
         return flightID;
     }
 
+    @Override
     public LocalDate getDepartureDate() {
         return departureDate;
     }
 
+    @Override
     public int getCapacity(TravelClassType travelClassType)
     {
         return this.aeroplane.getCapacityByTravelClass(travelClassType);
     }
 
+    @Override
     public int getNoOfOccupiedSeats(TravelClassType travelClassType)
     {
         return this.aeroplane.getNoOfOccupiedSeatsByTravelClass(travelClassType);
     }
+
+
     public double getBaseFare(TravelClassType travelClassType)
     {
         return this.aeroplane.getBaseFare(travelClassType);
     }
 
+    public double getTotalFare(TravelClassType travelClassType, int requiredSeats, Optional<PricingRulesRepsitory> pricingRulesRepsitory)
+    {
+        Optional<IPriceProcessor> priceProcessor = PriceProcessorResolver.resolvePriceProessor(travelClassType,this);
+        if(priceProcessor.isPresent() && pricingRulesRepsitory.isPresent())
+        {
+            priceProcessor.get().setPricingRulesRepsitory(pricingRulesRepsitory.get());
+            return priceProcessor.get().applyPriceIncrement(getBaseFare(travelClassType)) * requiredSeats;
+        }
+        return getBaseFare(travelClassType) * requiredSeats;
+    }
     public void bookSeats(TravelClassType travelClassType, int noOfSeatsTobeBooked)
     {
         if(noOfSeatsTobeBooked>0 && noOfSeatsTobeBooked <10 )

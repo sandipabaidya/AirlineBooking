@@ -1,8 +1,8 @@
 package airline.Processor;
 
-import airline.Model.PricingRuleModels.BusinessPricingRuleModel;
-
+import airline.Model.*;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 /**
@@ -10,18 +10,13 @@ import java.util.Optional;
  */
 public class FirstClassPriceProcessor extends PriceProcessor {
 
-    LocalDate dateOfDeparture;
-
-    public FirstClassPriceProcessor(LocalDate dateOfDeparture) {
-        super();
-        this.dateOfDeparture = dateOfDeparture;
+    FirstClassPriceProcessor(IFlight flight){
+        super(flight);
     }
-
-
     @Override
     protected void setPercentageOfIncrement()
     {
-        int dayDiffWithDateOfJourney = dateOfDeparture.compareTo(LocalDate.now());
+        long dayDiffWithDateOfJourney = LocalDate.now().until(flight.getDepartureDate(), ChronoUnit.DAYS);
 
         if(dayDiffWithDateOfJourney >= 0 && dayDiffWithDateOfJourney < 10) {
             percentageOfIncrement = pricingRulesRepsitory.getFirstClassPricingRuleModel()

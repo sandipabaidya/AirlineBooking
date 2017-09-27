@@ -29,6 +29,8 @@ class EconomicPriceProcessorTest {
 
     List<EconomicPricingRuleModel> economicRuleList;
 
+    IFlight mockFlight;
+    IPriceProcessor priceProcessor;
     @Before
     public void setUp()
     {
@@ -41,6 +43,10 @@ class EconomicPriceProcessorTest {
         mockEconomicRule3 = new EconomicPricingRuleModel(90,100,60);
 
         when(pricingRulesRepsitory.getEconomicPricingRuleList()).thenReturn(Arrays.asList(mockEconomicRule1, mockEconomicRule2, mockEconomicRule3));
+
+        mockFlight =Mockito.mock(IFlight.class)
+        priceProcessor=new EconomicPriceProcessor(mockFlight);
+        priceProcessor.setPricingRulesRepsitory(pricingRulesRepsitory);
     }
 
     @Test
@@ -53,22 +59,24 @@ class EconomicPriceProcessorTest {
 
     @Test
     void ShouldReturnPricePriceAs7800ifBasePriceis6000AndOutOf195seats100isBooked() {
-        EconomicPriceProcessor priceProcessor=new EconomicPriceProcessor(195,100);
-        priceProcessor.setPricingRulesRepsitory(pricingRulesRepsitory);
+
+        when(mockFlight.getNoOfOccupiedSeats(TravelClassType.ECONOMY)).thenReturn(100);
+        when(mockFlight.getCapacity(TravelClassType.ECONOMY)).thenReturn(195);
+
         Assert.assertEquals(7800,priceProcessor.applyPriceIncrement(6000),0.01)
     }
 
     @Test
     void ShouldReturnPricePriceAs6000ifBasePriceis6000AndOutOf195seats10isBooked() {
-        EconomicPriceProcessor priceProcessor=new EconomicPriceProcessor(195,10);
-        priceProcessor.setPricingRulesRepsitory(pricingRulesRepsitory);
+        when(mockFlight.getNoOfOccupiedSeats(TravelClassType.ECONOMY)).thenReturn(10);
+        when(mockFlight.getCapacity(TravelClassType.ECONOMY)).thenReturn(195);
         Assert.assertEquals(6000,priceProcessor.applyPriceIncrement(6000),0.01)
     }
 
     @Test
     void ShouldReturnPricePriceAs9600ifBasePriceis6000AndOutOf195seats190isBooked() {
-        EconomicPriceProcessor priceProcessor=new EconomicPriceProcessor(195,190);
-        priceProcessor.setPricingRulesRepsitory(pricingRulesRepsitory);
+        when(mockFlight.getNoOfOccupiedSeats(TravelClassType.ECONOMY)).thenReturn(190);
+        when(mockFlight.getCapacity(TravelClassType.ECONOMY)).thenReturn(195);
         Assert.assertEquals(9600,priceProcessor.applyPriceIncrement(6000),0.01)
     }
 }

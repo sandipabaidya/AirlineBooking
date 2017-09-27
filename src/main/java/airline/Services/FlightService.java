@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -26,7 +27,7 @@ public class FlightService {
     FlightRepository flightRepository;
 
     @Autowired
-    PriceProcessingService priceProcessingService;
+    PricingRulesRepsitory pricingRulesRepsitory;
 
     public SearchResponse SearchFlights(SearchCriteria searchCriteria) {
         SearchResponse searchResponse=new SearchResponse();
@@ -65,9 +66,8 @@ public class FlightService {
         FlightView flightView=transformer.transform(flight);
 
         //Calculate and Set Price
-        flightView.setFare(priceProcessingService.getTotalFare(flight, searchCriteria));
+        flightView.setFare(flight.getTotalFare(searchCriteria.getTravelClassType(),searchCriteria.getRequiredSeats(), Optional.ofNullable(pricingRulesRepsitory)));
 
-        //return View+
         return flightView;
     }
 }

@@ -2,6 +2,7 @@ package airline.Services
 
 import airline.Model.Aeroplane
 import airline.Model.Flight
+import airline.Model.IFlight
 import airline.Model.PricingRuleModels.EconomicPricingRuleModel
 import airline.Model.ViewModels.FlightView
 import airline.Model.ViewModels.SearchCriteria
@@ -34,6 +35,9 @@ class FlightServiceTest{
     @MockBean
     FlightRepository flightRepository;
 
+
+    @MockBean
+    PricingRulesRepsitory pricingRulesRepsitory;
 
     @Before
     public void setUp()
@@ -75,6 +79,7 @@ class FlightServiceTest{
         aeroplane.AddTravelClass(travelClass);
         Flight flight =new Flight("fl01","blr","del",LocalDate.parse("2017-09-06"),aeroplane);
 
+        IFlight mockFlight =Mockito.mock(IFlight.class)
         Assert.assertEquals(0,
                 flight.getBaseFare(TravelClassType.BUSINESS),0.001);
 

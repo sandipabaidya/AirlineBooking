@@ -1,6 +1,7 @@
 package airline.Processor;
 
 
+import airline.Model.IFlight;
 import airline.Model.PricingRuleModels.EconomicPricingRuleModel;
 import airline.Model.TravelClassType;
 
@@ -11,19 +12,15 @@ import java.util.stream.Collectors;
  * Created by Sandipa on 9/14/2017.
  */
 public class EconomicPriceProcessor extends PriceProcessor {
-    int noOfOccupiedSeats=0;
-    int totalSeatCapacity ;
-    public EconomicPriceProcessor(int totalSeatCapacity,int noOfOccupiedSeats) {
-        super();
-        this.noOfOccupiedSeats = noOfOccupiedSeats;
-        this.totalSeatCapacity=totalSeatCapacity;
+
+    EconomicPriceProcessor(IFlight flight){
+        super(flight);
     }
-
-
     @Override
     protected void setPercentageOfIncrement()
     {
-        float percentOfOccupiedSeats=(noOfOccupiedSeats * 100 / totalSeatCapacity);
+        float percentOfOccupiedSeats=(flight.getNoOfOccupiedSeats(TravelClassType.ECONOMY)
+                * 100 / flight.getCapacity(TravelClassType.ECONOMY));
         Optional<EconomicPricingRuleModel> economicClassRule=pricingRulesRepsitory.getEconomicPricingRuleList().stream()
                 .filter(pricingRule -> pricingRule.getMinPercentageOfOccupiedSeats() < percentOfOccupiedSeats &&
                         pricingRule.getMaxPercentageOfOccupiedSeats() >= percentOfOccupiedSeats)
@@ -34,4 +31,5 @@ public class EconomicPriceProcessor extends PriceProcessor {
         }
 
     }
+
 }

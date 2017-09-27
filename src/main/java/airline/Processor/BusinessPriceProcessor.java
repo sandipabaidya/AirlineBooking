@@ -1,5 +1,6 @@
 package airline.Processor;
 
+import airline.Model.IFlight;
 import airline.Model.PricingRuleModels.BusinessPricingRuleModel;
 import airline.Model.TravelClassType;
 
@@ -12,11 +13,8 @@ import java.util.Optional;
  */
 public class BusinessPriceProcessor extends PriceProcessor {
 
-    LocalDate dateOfDeparture;
-
-    public BusinessPriceProcessor(LocalDate dateOfDeparture) {
-        super();
-        this.dateOfDeparture = dateOfDeparture;
+    BusinessPriceProcessor(IFlight flight){
+        super(flight);
     }
 
 
@@ -24,7 +22,7 @@ public class BusinessPriceProcessor extends PriceProcessor {
     protected void setPercentageOfIncrement()
     {
         Optional<BusinessPricingRuleModel> businessPricingRuleModel=pricingRulesRepsitory.getBusinessPricingRuleList().stream()
-                .filter(pricingRule -> pricingRule.getDayOfWeek().compareTo(dateOfDeparture.getDayOfWeek())==0)
+                .filter(pricingRule -> pricingRule.getDayOfWeek().compareTo(flight.getDepartureDate().getDayOfWeek())==0)
                 .findFirst();
 
         if(businessPricingRuleModel.isPresent()) {

@@ -5,7 +5,7 @@ package airline.Model.PricingRuleModels;
  */
 public class FirstClassPricingRuleModel {
 
-    public float getIncrementalPercentInFare(int dayDiffWithDateOfJourney) {
+    public float getIncrementalPercentInFare(long dayDiffWithDateOfJourney) {
         if((10 - dayDiffWithDateOfJourney) >=0)
             return (10 - dayDiffWithDateOfJourney) * 10f;
 
