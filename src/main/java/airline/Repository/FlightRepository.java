@@ -2,8 +2,10 @@ package airline.Repository;
 
 import airline.Model.Flight;
 import airline.Utility.dataUploader;
+import org.springframework.core.io.*;
 import org.springframework.stereotype.Repository;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -14,8 +16,10 @@ import java.util.List;
 public class FlightRepository {
     private List<Flight> flights;
 
-    public FlightRepository() {
-        String flightInfoFileName="C:\\TWHandson\\AirlineBooking\\AirlineBooking\\src\\main\\resources\\FlightDetails";
+    public FlightRepository() throws Exception {
+
+        Resource resource = new ClassPathResource("FlightDetails");
+        File flightInfoFileName = resource.getFile();
         flights = dataUploader.LoadFlights(flightInfoFileName);
     }
 

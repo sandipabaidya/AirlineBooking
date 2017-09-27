@@ -3,8 +3,11 @@ package airline.Repository;
 
 import airline.Model.Location;
 import airline.Utility.dataUploader;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Repository;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -15,9 +18,10 @@ import java.util.List;
 public class LocationRepository {
     private List<Location> locations;
 
-    public LocationRepository() {
-        String locationInfoFileName="C:\\TWHandson\\AirlineBooking\\AirlineBooking\\src\\main\\resources\\locations.csv";
-        locations = dataUploader.loadLocations(locationInfoFileName);
+    public LocationRepository() throws Exception {
+       Resource resource = new ClassPathResource("locations.csv");
+        File locationInfoFile = resource.getFile();
+        locations = dataUploader.loadLocations(locationInfoFile);
     }
 
     public List<Location> getLocations() {

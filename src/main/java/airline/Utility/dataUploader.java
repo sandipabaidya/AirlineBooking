@@ -11,7 +11,7 @@ import java.util.*;
  */
 public final class dataUploader {
 
-    public static List<Flight> LoadFlights(String fileName) {
+    public static List<Flight> LoadFlights(File fileName) {
         List <Flight> resultList = new ArrayList<Flight>();
         String line = "";
         String cvsSplitBy = ",";
@@ -51,7 +51,7 @@ public final class dataUploader {
         return resultList;
     }
 
-    public static List<Location> loadLocations(String locationFilePath) {
+    public static List<Location> loadLocations(File locationFilePath) {
         List <Location> locations = new ArrayList<Location>();
         String line = "";
         String cvsSplitBy = ",";
